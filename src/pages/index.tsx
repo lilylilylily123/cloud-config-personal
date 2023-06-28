@@ -1,8 +1,10 @@
 import {FormEvent, useState} from "react";
 import PocketBase from "pocketbase";
 import {useRouter} from "next/router";
-export const pb = new PocketBase("https://panthium.pockethost.io")
+import styles from "../styles/index.module.css"
 
+export const pb = new PocketBase("https://panthium.pockethost.io")
+pb.autoCancellation(false)
 
 export default function Home() {
     const router = useRouter();
