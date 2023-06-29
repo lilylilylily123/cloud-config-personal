@@ -19,7 +19,21 @@ interface configType {
 
 }
 
-const defaultConfig: configType = {"FOV": 165.0, "Smoothing": 50.5, "Aimbot_Key": "Left Mouse", "Aimbone": "Head", "Threshhold": 0, "Bhop": 0, "Alt_Aimbot": 0, "Triggerbot": 0, "Triggerbot_Key": "Left Mouse", "Alt_Aimbot_Key": "Head", "Triggerbot_Type": "Normal", "Accelerate": 0, "Sensitivity": 25.5}
+const defaultConfig: configType = {
+  "Accelerate": 0,
+  "Aimbone": "Head",
+  "Aimbot_Key": "Left Mouse",
+  "Alt_Aimbot": 0,
+  "Alt_Aimbot_Key": "Head",
+  "Bhop": 0,
+  "FOV": 165,
+  "Sensitivity": 25.5,
+  "Smoothing": 50.5,
+  "Threshhold": 0,
+  "Triggerbot": 0,
+  "Triggerbot_Key": "Left Mouse",
+  "Triggerbot_Type": "Normal"
+}
 
 
 function Index() {
@@ -29,7 +43,13 @@ function Index() {
       router.push("/")
     }
   }, [router])
+  // console.log(pb.authStore?.model?.config["Accelerate"])
   const [config, setConfig] = useState<configType>(defaultConfig)
+    useEffect(() => {
+        if (pb.authStore?.model?.config) {
+            setConfig(pb.authStore?.model?.config)
+        }
+    }, [])
   const updateForm = (e: FormEvent) => {
     console.log(e)
     e.preventDefault();
@@ -145,14 +165,14 @@ function Index() {
         <div className={styles.bottomPage}>
           {/*<form className={styles.form} >*/}
           <form className={styles.bottomPageTop} onSubmit={(e: FormEvent) => updateForm(e)}>
-            {Object.keys(config).map((key, index) => {
+            {Object.keys(config || defaultConfig).map((key, index) => {
               return (
                   <div key={index} className={styles.inputFields} >
                     <div className={styles.inputFieldTitle}>
                       {key.replaceAll("_", " ")}
                     </div>
                     {/* @ts-ignore */}
-                    <input className={styles.inputFieldOfficial} defaultValue={defaultConfig[key]} type="text" placeholder="Type Here..." />
+                    <input className={styles.inputFieldOfficial} defaultValue={config[key]} type="text" placeholder="Type Here..." />
                   </div>
               )
             })}
